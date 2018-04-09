@@ -131,6 +131,127 @@ class Data {
 
         return this.limit(newList, limit);
     }
+
+    /**
+     * 
+     * @param String key to add priority to.
+     */
+    setPriority(key) {
+        switch(key) {
+            case "Salsnr":
+                return 0.45;
+                break;
+            case "Salsnamn":
+                return 0.30;
+                break;
+            case "Lat":
+                return 0.15;
+                break;
+            case "Long":
+                return 0.15;
+                break;
+            case "Ort":
+                return 0.35;
+                break;
+            case "Hus":
+                return 0.30;
+                break;
+            case "Våning":
+                return 0.10;
+                break;
+            case "Typ":
+                return 0.10;
+                break;
+            case "Storlek":
+                return 0.05;
+                break;
+        }
+    }
+
+    /* Fuzzy Search, inspiration from http://jsfiddle.net/ezwv3uuc/ */
+    get_bigrams(string) {
+        let j, ref;
+        let s = string.toLowerCase();
+        let v = new Array(s.length - 1);
+        for (let i = j = 0, ref = v.length; j <= ref; i = j += 1) {
+            v[i] = s.slice(i, i + 2);
+        }
+        return v;
+    };
+
+    checkStringScore(str1, str2, key) {
+        let len, len1;
+        let priority = this.setPriority(key)
+        if (str1.length > 0 && str2.length > 0) {
+            let pairs1 = this.get_bigrams(str1);
+            let pairs2 = this.get_bigrams(str2);
+            let union = pairs1.length + pairs2.length;
+            let hit_count = 0;
+            for (let j = 0, len = pairs1.length; j < len; j++) {
+                let x = pairs1[j];
+                for (let k = 0, len1 = pairs2.length; k < len1; k++) {
+                    let y = pairs2[k];
+                    if (x === y) {
+                    hit_count++;
+                    }
+                }
+            }
+            if (hit_count > 0) {
+                return ((1.10 * hit_count) / union) + priority;
+            }
+        }
+        return 0.0;
+    }
+    /* Fuzzy Search, inspiration from http://jsfiddle.net/ezwv3uuc/ */
+
+    /**
+     * 
+     * @param Object object from list.
+     * @param String query / keyword to search for.
+     */
+    addPriority(object, query) {
+        let priorityList = [];
+        for (let key in object) {
+            let priority = 0;
+            if (object.hasOwnProperty(key)) {
+                if(object[key] !== null) {
+                    if (object[key].toLowerCase().includes(query.toLowerCase())) {
+                        priority += this.checkStringScore(query, object[key], key);
+                    }
+                }
+            }
+            priorityList.push([key, priority]);
+        }
+        priorityList = priorityList.sort(function(a, b) {
+            return b[1] - a[1];
+        });
+
+        if(priorityList[0][1] > 0) {
+            return Object.assign({}, object, {"Priority": priorityList[0][1]});
+        }
+        return null;
+    }
+
+    /**
+     * 
+     * @param String query you want to search for.
+     * @param Int limit number of room being returned.
+     */
+    searchPriority(query, limit) {
+        let newList = [];
+        for(let object of this.list) {
+            let value = this.addPriority(object, query);
+            if(value !== null) {
+                newList.push(value);
+            }
+        }
+
+        newList.sort(function(a, b) {
+            return b.Priority - a.Priority;
+        });
+
+        return this.limit(newList, limit);
+    }
 }
 
 export default Data;

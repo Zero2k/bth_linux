@@ -194,8 +194,28 @@ rl.on("line", function(line) {
         case "search":
             if (args[1] != null) {
                 let keyword = args[1];
+                let limit = args[2];
 
-                client.search(keyword)
+                client.search(keyword, limit)
+                .then(value => {
+                    console.log(value);
+                    rl.prompt();
+                })
+                .catch(err => {
+                    console.log("FAILED: No room match your keyword.\nDetails: " + err);
+                    rl.prompt();
+                });
+            } else {
+                console.log("FAILED: You need to provid a search term.");
+            }
+            break;
+
+        case "searchp":
+            if (args[1] != null) {
+                let keyword = args[1];
+                let limit = args[2];
+
+                client.searchPriority(keyword, limit)
                 .then(value => {
                     console.log(value);
                     rl.prompt();

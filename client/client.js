@@ -76,8 +76,20 @@ class Client {
         }
     }
 
-    search(keyword) {
-        return this.httpGet("/room/search/" + keyword);
+    search(keyword, limit = null) {
+        if(limit !== null) {
+            return this.httpGet("/room/search/" + keyword + '?max=' + limit);
+        } else {
+            return this.httpGet("/room/search/" + keyword);
+        }
+    }
+
+    searchPriority(keyword, limit = null) {
+        if(limit !== null) {
+            return this.httpGet("/room/searchp/" + keyword + '?max=' + limit);
+        } else {
+            return this.httpGet("/room/searchp/" + keyword);
+        }
     }
 }
 

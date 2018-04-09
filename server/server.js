@@ -64,7 +64,7 @@ router.get("/room/list", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "rooms": data.getList(max),
+        "data": data.getList(max),
     });
 });
 
@@ -86,7 +86,7 @@ router.get("/room/view/id/:number", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "room": data.getSingleRoom(roomId),
+        "data": data.getSingleRoom(roomId),
     });
 });
 
@@ -110,7 +110,7 @@ router.get("/room/view/house/:house", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "rooms": data.getRoomsInHouse(decodeURI(houseName), max),
+        "data": data.getRoomsInHouse(decodeURI(houseName), max),
     });
 });
 
@@ -134,7 +134,32 @@ router.get("/room/search/:search", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "rooms": data.search(decodeURI(searchQuery), max),
+        "data": data.search(decodeURI(searchQuery), max),
+        "keyword": decodeURI(searchQuery)
+    });
+});
+
+/**
+ * Search with priority among all rooms.
+ *
+ * @param Object req The request
+ * @param Object res The response
+ */
+router.get("/room/searchp/:search", (req, res) => {
+
+    let searchQuery = req.params.search;
+    let query = url.parse(req.url, true).query;
+    let max = (query.max !== undefined) ? query.max : null;
+    try {
+        data.searchPriority(decodeURI(searchQuery), max);
+    } catch (err) {
+        message = err.message;
+    }
+
+    // Send the response
+    sendJSONResponse(res, {
+        "message": message || "Success",
+        "data": data.searchPriority(decodeURI(searchQuery), max),
         "keyword": decodeURI(searchQuery)
     });
 });
