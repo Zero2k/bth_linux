@@ -80,6 +80,10 @@ while ((arg = args.shift()) !== undefined) {
             }
             break;
 
+        case "--develop":
+            client.setVerbose();
+            break;
+
         default:
             badUsage("Unknown argument.");
             process.exit(1);

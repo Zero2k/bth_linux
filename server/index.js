@@ -1,6 +1,6 @@
 #!/usr/bin/env babel-node
 import path from 'path';
-import server from "./server.js";
+import server, { setVerbose } from "./server.js";
 
 const VERSION = "1.0.0";
 
@@ -60,6 +60,10 @@ while ((arg = args.shift()) !== undefined) {
                 badUsage("--port must be followed by a port number.");
                 process.exit(1);
             }
+            break;
+
+        case "--develop":
+            setVerbose();
             break;
 
         default:

@@ -29,6 +29,10 @@ class Client {
         return this.server;
     }
 
+    setVerbose() {
+        this.VERBOSE = true;
+    }
+
     /**
     * Make a HTTP GET request, wrapped in a Promise.
     *
@@ -40,7 +44,9 @@ class Client {
         return new Promise((resolve, reject) => {
             http.get(this.server + url, (res) => {
                 let data = "";
-
+                if(this.VERBOSE) {
+                    console.log("URL: ", this.server + url);
+                }
                 res.on('data', (chunk) => {
                     data += chunk;
                 }).on('end', () => {

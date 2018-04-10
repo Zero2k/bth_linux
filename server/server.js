@@ -6,7 +6,12 @@ import Data from './data';
 const router = new Router();
 const data = new Data();
 
-let message;
+let message
+let VERBOSE = false;
+
+export const setVerbose = () => {
+    VERBOSE = true;
+}
 
 /**
  * Wrapper function for sending a JSON response
@@ -15,9 +20,12 @@ let message;
  * @param  Object/String content What should be written to the response
  * @param  Integer       code    HTTP status code
  */
-function sendJSONResponse(res, content, code = 200) {
+const sendJSONResponse = (res, content, code = 200) => {
     res.writeHead(code, {"Content-Type": "application/json"});
-    res.write(JSON.stringify(content, null, "    "));
+    res.write(JSON.stringify(content, null, "  "));
+    if (VERBOSE) {
+        console.log(JSON.stringify(content, null, "  "));
+    }
     res.end();
 }
 
