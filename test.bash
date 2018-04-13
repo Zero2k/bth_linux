@@ -5,6 +5,7 @@ SCRIPT=$( basename "$0" )
 
 # Current version
 VERSION="1.1.0"
+VERBOSE=false
 
 # Message to display for usage and help.
 
@@ -101,6 +102,21 @@ function app-check_values()
     printf "\n%s\n" "-------------------------------"
 }
 
+function app-list
+{
+    response=$(curl -s -o /dev/null -w '%{http_code}\n' ${LINUX_SERVER}:${LINUX_PORT}/room/list)
+    printf "\nTest API-endpoint: '/room/list'\nURL:\t\t%s\nResponse-Code:\t%s\n" "${LINUX_SERVER}:${LINUX_PORT}/room/list" "${response}"
+
+    if [ "$VERBOSE" = true ] ; then
+        printf "VERBOSE:\t%s\n" "$VERBOSE"
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/list?max=5)
+        printf "\nTest API-endpoint: '/room/list' with max=5\nResponse-Body: %s" "${response}"
+
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/list)
+        printf "\n\nTest API-endpoint: '/room/list' without max\nResponse-Body: %s" "${response}"
+    fi
+}
+
 #shellcheck disable=SC2086
 #shellcheck disable=SC2048
 while (( $# ))
@@ -114,6 +130,14 @@ do
 
         --version | -v)
             version
+            exit 0
+        ;;
+
+        --verbose )
+            VERBOSE=true
+            app-check_values
+            command=$2
+            app-$command
             exit 0
         ;;
 
