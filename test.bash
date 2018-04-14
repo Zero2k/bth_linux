@@ -117,6 +117,22 @@ function app-list
     fi
 }
 
+function app-view
+{
+    response=$(curl -s -o /dev/null -w '%{http_code}\n' ${LINUX_SERVER}:${LINUX_PORT}/room/view/id/2-116)
+    printf "\nTest API-endpoint: '/room/view/id/:id'\nURL:\t\t%s\nResponse-Code:\t%s\n" "${LINUX_SERVER}:${LINUX_PORT}/room/view/id/2-116" "${response}"
+
+    if [ "$VERBOSE" = true ] ; then
+        printf "VERBOSE:\t%s\n" "$VERBOSE"
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/id/2-116)
+        printf "\nTest API-endpoint: '/room/view/id/:id'\nResponse-Body: %s" "${response}"
+
+        # Make this return an Error
+        #response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/id/error)
+        #printf "\n\nTest API-endpoint: '/room/view/id/:id'\nResponse-Body: %s" "${response}"
+    fi
+}
+
 #shellcheck disable=SC2086
 #shellcheck disable=SC2048
 while (( $# ))
@@ -143,7 +159,7 @@ do
 
         route \
         | list \
-        | id \
+        | view \
         | house \
         | search \
         | searchp )
