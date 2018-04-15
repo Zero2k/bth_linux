@@ -133,6 +133,36 @@ function app-view
     fi
 }
 
+function app-house
+{
+    response=$(curl -s -o /dev/null -w '%{http_code}\n' ${LINUX_SERVER}:${LINUX_PORT}/room/view/house/H-huset)
+    printf "\nTest API-endpoint: '/room/view/house/:house'\nURL:\t\t%s\nResponse-Code:\t%s\n" "${LINUX_SERVER}:${LINUX_PORT}/room/view/house/H-huset" "${response}"
+
+    if [ "$VERBOSE" = true ] ; then
+        printf "VERBOSE:\t%s\n" "$VERBOSE"
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/house/H-huset?max=5)
+        printf "\nTest API-endpoint: '/room/view/house/:house' with max=5\nResponse-Body: %s" "${response}"
+
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/house/H-huset)
+        printf "\n\nTest API-endpoint: '/room/view/house/:house' without max\nResponse-Body: %s" "${response}"
+    fi
+}
+
+function app-search
+{
+    response=$(curl -s -o /dev/null -w '%{http_code}\n' ${LINUX_SERVER}:${LINUX_PORT}/room/search/Grupprum)
+    printf "\nTest API-endpoint: '/room/search/:search'\nURL:\t\t%s\nResponse-Code:\t%s\n" "${LINUX_SERVER}:${LINUX_PORT}/room/search/Grupprum" "${response}"
+
+    if [ "$VERBOSE" = true ] ; then
+        printf "VERBOSE:\t%s\n" "$VERBOSE"
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/search/Grupprum?max=5)
+        printf "\nTest API-endpoint: '/room/search/:search' with max=5\nResponse-Body: %s" "${response}"
+
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/search/Grupprum)
+        printf "\n\nTest API-endpoint: '/room/search/:search' without max\nResponse-Body: %s" "${response}"
+    fi
+}
+
 #shellcheck disable=SC2086
 #shellcheck disable=SC2048
 while (( $# ))
