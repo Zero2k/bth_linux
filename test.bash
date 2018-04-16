@@ -127,9 +127,8 @@ function app-view
         response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/id/2-116)
         printf "\nTest API-endpoint: '/room/view/id/:id'\nResponse-Body: %s" "${response}"
 
-        # Make this return an Error
-        #response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/id/error)
-        #printf "\n\nTest API-endpoint: '/room/view/id/:id'\nResponse-Body: %s" "${response}"
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/view/id/0-000)
+        printf "\n\nTest API-endpoint: '/room/view/id/:id'\nResponse-Body: %s" "${response}"
     fi
 }
 
@@ -160,6 +159,21 @@ function app-search
 
         response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/search/Grupprum)
         printf "\n\nTest API-endpoint: '/room/search/:search' without max\nResponse-Body: %s" "${response}"
+    fi
+}
+
+function app-searchp
+{
+    response=$(curl -s -o /dev/null -w '%{http_code}\n' ${LINUX_SERVER}:${LINUX_PORT}/room/searchp/on)
+    printf "\nTest API-endpoint: '/room/searchp/:search'\nURL:\t\t%s\nResponse-Code:\t%s\n" "${LINUX_SERVER}:${LINUX_PORT}/room/searchp/hus" "${response}"
+
+    if [ "$VERBOSE" = true ] ; then
+        printf "VERBOSE:\t%s\n" "$VERBOSE"
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/searchp/on?max=5)
+        printf "\nTest API-endpoint: '/room/searchp/:search' with max=5\nResponse-Body: %s" "${response}"
+
+        response=$(curl -s ${LINUX_SERVER}:${LINUX_PORT}/room/searchp/on)
+        printf "\n\nTest API-endpoint: '/room/searchp/:search' without max\nResponse-Body: %s" "${response}"
     fi
 }
 
