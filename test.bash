@@ -65,7 +65,7 @@ function version
 
 function app-check_values()
 {
-	printf "%s\n\n" "-------------------------------"
+	printf "%s\n\n" "--------------------------------"
 
     if [[ $LINUX_PORT ]]; then
 
@@ -82,7 +82,7 @@ function app-check_values()
 
     fi;
 
-        printf "\n%s\n\n" "-------------------------------"
+        printf "\n%s\n\n" "--------------------------------"
 
     if [[ $LINUX_SERVER ]]; then
 
@@ -99,7 +99,7 @@ function app-check_values()
 
     fi;
 
-    printf "\n%s\n" "-------------------------------"
+    printf "\n%s\n" "--------------------------------"
 }
 
 function app-list
@@ -177,6 +177,20 @@ function app-searchp
     fi
 }
 
+function app-all
+{
+    printf "\n%s\n" "---------- #1 TEST -------------"
+    app-list
+    printf "\n%s\n" "---------- #2 TEST -------------"
+    app-view
+    printf "\n%s\n" "---------- #3 TEST -------------"
+    app-house
+    printf "\n%s\n" "---------- #4 TEST -------------"
+    app-search
+    printf "\n%s\n" "---------- #5 TEST -------------"
+    app-searchp
+}
+
 #shellcheck disable=SC2086
 #shellcheck disable=SC2048
 while (( $# ))
@@ -206,7 +220,8 @@ do
         | view \
         | house \
         | search \
-        | searchp )
+        | searchp \
+        | all )
             app-check_values
             command=$1
             shift
