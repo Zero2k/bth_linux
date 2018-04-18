@@ -4,7 +4,7 @@ import url from 'url';
 class Client {
 
     constructor() {
-        this.init()
+        this.init();
     }
 
     init() {
@@ -18,7 +18,7 @@ class Client {
     *
     */
     setServer(url, port = null) {
-        if(port !== null) {
+        if (port !== null) {
             return this.server = `http://${url}:${port}`;
         } else {
             return this.server = `http://${url}`;
@@ -44,7 +44,7 @@ class Client {
         return new Promise((resolve, reject) => {
             http.get(this.server + url, (res) => {
                 let data = "";
-                if(this.VERBOSE) {
+                if (this.VERBOSE) {
                     console.log("URL: ", this.server + url);
                 }
                 res.on('data', (chunk) => {
@@ -63,7 +63,7 @@ class Client {
     }
 
     list(limit = null) {
-        if(limit !== null) {
+        if (limit !== null) {
             return this.httpGet("/room/list" + '?max=' + limit);
         } else {
             return this.httpGet("/room/list");
@@ -75,7 +75,7 @@ class Client {
     }
 
     house(houseName, limit = null) {
-        if(limit !== null) {
+        if (limit !== null) {
             return this.httpGet("/room/view/house/" + houseName + '?max=' + limit);
         } else {
             return this.httpGet("/room/view/house/" + houseName);
@@ -83,7 +83,7 @@ class Client {
     }
 
     search(keyword, limit = null) {
-        if(limit !== null) {
+        if (limit !== null) {
             return this.httpGet("/room/search/" + keyword + '?max=' + limit);
         } else {
             return this.httpGet("/room/search/" + keyword);
@@ -91,7 +91,7 @@ class Client {
     }
 
     searchPriority(keyword, limit = null) {
-        if(limit !== null) {
+        if (limit !== null) {
             return this.httpGet("/room/searchp/" + keyword + '?max=' + limit);
         } else {
             return this.httpGet("/room/searchp/" + keyword);

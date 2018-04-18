@@ -26,12 +26,12 @@ class Data {
     }
 
     /**
-     * 
+     *
      * @param Array list of room.
      * @param Int limit number of room being returned.
      */
     limit(list, limit = null) {
-        if(limit !== null) {
+        if (limit !== null) {
             return list.slice(0, limit);
         } else {
             return list;
@@ -39,7 +39,7 @@ class Data {
     }
 
     /**
-     * 
+     *
      * @param Int limit number of room being returned.
      */
     getList(limit = null) {
@@ -47,7 +47,7 @@ class Data {
     }
 
     /**
-     * 
+     *
      * @param Int roomId you want information about.
      */
     getSingleRoom(roomId) {
@@ -59,7 +59,7 @@ class Data {
     }
 
     /**
-     * 
+     *
      * @param String houseName you want information about.
      * @param Int limit number of room being returned.
      */
@@ -76,95 +76,86 @@ class Data {
     }
 
     /**
-     * 
+     *
      * @param String keyword you want to search for.
      * @param Int limit number of room being returned.
      */
     search(keyword, limit = null) {
         let newList = this.list.filter(room => {
-            if(room.Salsnr !== null) {
-                if(room.Salsnr.toLowerCase().includes(keyword.toLowerCase())) {
+            if (room.Salsnr !== null) {
+                if (room.Salsnr.toLowerCase().includes(keyword.toLowerCase())) {
                     return room;
                 }
             }
-            if(room.Salsnamn !== null) {
-                if(room.Salsnamn.toLowerCase().includes(keyword.toLowerCase())) {
+            if (room.Salsnamn !== null) {
+                if (room.Salsnamn.toLowerCase().includes(keyword.toLowerCase())) {
                     return room;
                 }
             }
-            if(room.Lat !== null) {
-                if(room.Lat.includes(keyword)) {
+            if (room.Lat !== null) {
+                if (room.Lat.includes(keyword)) {
                     return room;
                 }
             }
-            if(room.Long !== null) {
-                if(room.Long.includes(keyword)) {
+            if (room.Long !== null) {
+                if (room.Long.includes(keyword)) {
                     return room;
                 }
             }
-            if(room.Ort !== null) {
-                if(room.Ort.toLowerCase().includes(keyword.toLowerCase())) {
+            if (room.Ort !== null) {
+                if (room.Ort.toLowerCase().includes(keyword.toLowerCase())) {
                     return room;
                 }
             }
-            if(room.Hus !== null) {
-                if(room.Hus.toLowerCase().includes(keyword.toLowerCase())) {
+            if (room.Hus !== null) {
+                if (room.Hus.toLowerCase().includes(keyword.toLowerCase())) {
                     return room;
                 }
             }
-            if(room.Våning !== null) {
-                if(room.Våning.includes(keyword)) {
+            if (room.Våning !== null) {
+                if (room.Våning.includes(keyword)) {
                     return room;
                 }
             }
-            if(room.Typ !== null) {
-                if(room.Typ.toLowerCase().includes(keyword.toLowerCase())) {
+            if (room.Typ !== null) {
+                if (room.Typ.toLowerCase().includes(keyword.toLowerCase())) {
                     return room;
                 }
             }
-            if(room.Storlek !== null) {
-                if(room.Storlek.includes(keyword)) {
+            if (room.Storlek !== null) {
+                if (room.Storlek.includes(keyword)) {
                     return room;
                 }
             }
-        })
+        });
 
         return this.limit(newList, limit);
     }
 
     /**
-     * 
+     *
      * @param String key to add priority to.
      */
     setPriority(key) {
-        switch(key) {
+        switch (key) {
             case "Salsnr":
                 return 0.45;
-                break;
             case "Salsnamn":
                 return 0.30;
-                break;
             case "Lat":
                 return 0.15;
-                break;
             case "Long":
                 return 0.15;
-                break;
             case "Ort":
                 return 0.35;
-                break;
             case "Hus":
                 return 0.30;
-                break;
             case "Våning":
                 return 0.10;
-                break;
             case "Typ":
                 return 0.10;
-                break;
             case "Storlek":
                 return 0.05;
-                break;
         }
     }
 
@@ -177,11 +168,11 @@ class Data {
             v[i] = s.slice(i, i + 2);
         }
         return v;
-    };
+    }
 
     checkStringScore(str1, str2, key) {
         let len, len1;
-        let priority = this.setPriority(key)
+        let priority = this.setPriority(key);
         if (str1.length > 0 && str2.length > 0) {
             let pairs1 = this.get_bigrams(str1);
             let pairs2 = this.get_bigrams(str2);
@@ -192,7 +183,7 @@ class Data {
                 for (let k = 0, len1 = pairs2.length; k < len1; k++) {
                     let y = pairs2[k];
                     if (x === y) {
-                    hit_count++;
+                        hit_count++;
                     }
                 }
             }
@@ -205,7 +196,7 @@ class Data {
     /* Fuzzy Search, inspiration from http://jsfiddle.net/ezwv3uuc/ */
 
     /**
-     * 
+     *
      * @param Object object from list.
      * @param String query / keyword to search for.
      */
@@ -214,7 +205,7 @@ class Data {
         for (let key in object) {
             let priority = 0;
             if (object.hasOwnProperty(key)) {
-                if(object[key] !== null) {
+                if (object[key] !== null) {
                     if (object[key].toLowerCase().includes(query.toLowerCase())) {
                         priority += this.checkStringScore(query, object[key], key);
                     }
@@ -226,22 +217,22 @@ class Data {
             return b[1] - a[1];
         });
 
-        if(priorityList[0][1] > 0) {
+        if (priorityList[0][1] > 0) {
             return Object.assign({}, object, {"Priority": priorityList[0][1]});
         }
         return null;
     }
 
     /**
-     * 
+     *
      * @param String query you want to search for.
      * @param Int limit number of room being returned.
      */
     searchPriority(query, limit) {
         let newList = [];
-        for(let object of this.list) {
+        for (let object of this.list) {
             let value = this.addPriority(object, query);
-            if(value !== null) {
+            if (value !== null) {
                 newList.push(value);
             }
         }

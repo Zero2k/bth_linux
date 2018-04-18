@@ -1,3 +1,4 @@
+"use strict";
 import http from 'http';
 import url from 'url';
 import Router from "./router";
@@ -6,12 +7,12 @@ import Data from './data';
 const router = new Router();
 const data = new Data();
 
-let message
+let message;
 let VERBOSE = false;
 
 export const setVerbose = () => {
     VERBOSE = true;
-}
+};
 
 /**
  * Wrapper function for sending a JSON response
@@ -27,7 +28,7 @@ const sendJSONResponse = (res, content, code = 200) => {
         console.log(JSON.stringify(content, null, "  "));
     }
     res.end();
-}
+};
 
 /**
  * Display a helptext about the API.

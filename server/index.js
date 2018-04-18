@@ -1,4 +1,5 @@
 #!/usr/bin/env babel-node
+"use strict";
 import path from 'path';
 import server, { setVerbose } from "./server.js";
 

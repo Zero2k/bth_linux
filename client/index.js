@@ -1,4 +1,5 @@
 #!/usr/bin/env babel-node
+"use strict";
 import readline from 'readline';
 import Client from './client.js';
 
@@ -134,7 +135,7 @@ rl.on("line", function(line) {
             break;
 
         case "list":
-            if(args[1] != null) {
+            if (args[1] != null) {
                 let limit = args[1];
                 client.list(limit)
                 .then(value => {
