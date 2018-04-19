@@ -7,7 +7,7 @@ import Data from './data';
 const router = new Router();
 const data = new Data();
 
-let message;
+let message, dataValue;
 let VERBOSE = false;
 
 export const setVerbose = () => {
@@ -65,7 +65,7 @@ router.get("/room/list", (req, res) => {
     let query = url.parse(req.url, true).query;
     let max = (query.max !== undefined) ? query.max : null;
     try {
-        data.getList(max);
+        dataValue = data.getList(max);
     } catch (err) {
         message = err.message;
     }
@@ -73,7 +73,7 @@ router.get("/room/list", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "data": data.getList(max),
+        "data": dataValue,
     });
 });
 
@@ -87,7 +87,7 @@ router.get("/room/view/id/:number", (req, res) => {
 
     let roomId = req.params.number;
     try {
-        data.getSingleRoom(roomId);
+        dataValue = data.getSingleRoom(roomId);
     } catch (err) {
         message = err.message;
     }
@@ -95,7 +95,7 @@ router.get("/room/view/id/:number", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "data": data.getSingleRoom(roomId),
+        "data": dataValue,
     });
 });
 
@@ -111,7 +111,7 @@ router.get("/room/view/house/:house", (req, res) => {
     let query = url.parse(req.url, true).query;
     let max = (query.max !== undefined) ? query.max : null;
     try {
-        data.getRoomsInHouse(decodeURI(houseName), max);
+        dataValue = data.getRoomsInHouse(decodeURI(houseName), max);
     } catch (err) {
         message = err.message;
     }
@@ -119,7 +119,7 @@ router.get("/room/view/house/:house", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "data": data.getRoomsInHouse(decodeURI(houseName), max),
+        "data": dataValue,
     });
 });
 
@@ -135,7 +135,7 @@ router.get("/room/search/:search", (req, res) => {
     let query = url.parse(req.url, true).query;
     let max = (query.max !== undefined) ? query.max : null;
     try {
-        data.search(decodeURI(searchQuery), max);
+        dataValue = data.search(decodeURI(searchQuery), max);
     } catch (err) {
         message = err.message;
     }
@@ -143,7 +143,7 @@ router.get("/room/search/:search", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "data": data.search(decodeURI(searchQuery), max),
+        "data": dataValue,
         "keyword": decodeURI(searchQuery)
     });
 });
@@ -160,7 +160,7 @@ router.get("/room/searchp/:search", (req, res) => {
     let query = url.parse(req.url, true).query;
     let max = (query.max !== undefined) ? query.max : null;
     try {
-        data.searchPriority(decodeURI(searchQuery), max);
+        dataValue = data.searchPriority(decodeURI(searchQuery), max);
     } catch (err) {
         message = err.message;
     }
@@ -168,7 +168,7 @@ router.get("/room/searchp/:search", (req, res) => {
     // Send the response
     sendJSONResponse(res, {
         "message": message || "Success",
-        "data": data.searchPriority(decodeURI(searchQuery), max),
+        "data": dataValue,
         "keyword": decodeURI(searchQuery)
     });
 });
