@@ -98,13 +98,14 @@ while ((arg = args.shift()) !== undefined) {
 function menu() {
     console.log(`
     Commands available:
-    exit            Leave this program.
-    menu            Print this menu.
-    url             Get url to view the server in browser.
-    list            List all rooms.
-    view <id>       View the room with the selected id.
-    house <house>   View the names of all rooms in this building (house).
-    search <string> View the details of all matching rooms (one per row).
+    exit             Leave this program.
+    menu             Print this menu.
+    url              Get url to view the server in browser.
+    list             List all rooms.
+    view <id>        View the room with the selected id.
+    house <house>    View the names of all rooms in this building (house).
+    search <string>  View the details of all matching rooms (one per row).
+    searchp <string> View the details of all matching rooms (one per row with Priority).
     `);
 }
 
