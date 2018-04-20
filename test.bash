@@ -17,7 +17,6 @@ function usage
     "Usage: ./$SCRIPT [options] <command> [arguments]"
     ""
     "Command:"
-    "  ./test.bash route       cURL server route: '/' - Expected result: 200"
     "  ./test.bash list        cURL server route: '/room/list' - Expected result: 200"
     "  ./test.bash id          cURL server route: '/room/view/id/:id' - Expected result: 200"
     "  ./test.bash house       cURL server route: '/room/view/house/:house' - Expected result: 200"

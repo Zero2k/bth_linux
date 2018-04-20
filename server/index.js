@@ -23,6 +23,7 @@ function usage() {
     -h               Display help text.
     -v               Display the version.
     --port <number>  Run server on this port.
+    --develop        Display the response that's being sent to the client.
     `);
 }
 

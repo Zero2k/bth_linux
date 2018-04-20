@@ -188,7 +188,7 @@ class Data {
                 }
             }
             if (hit_count > 0) {
-                return ((1.10 * hit_count) / union) + priority;
+                return (((1.10 * hit_count) / union) + priority).toFixed(2);
             }
         }
         return 0.0;
